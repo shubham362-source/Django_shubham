@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Contact|{% endblock title %}
+{% block body %}
+<div class="container px-0 mb-2 py-4">
+
+  
+      <img src="\static\3.jpg" style="width: 1200px; height: 400px;" alt="..."></div>
+      <div class="container">
+      <h2 class="text-center">Contact Us</h2>
+      <form action="/contact" method="post">
+        {% csrf_token %}
+
+
+        <div class="mb-3">
+  <label for="name" >Name</label>
+  <input type="text" class="form-control" id="name" name='name' placeholder="Enter your name" required>
+</div>
+      <div class="mb-3">
+  <label for="exampleFormControlInput2" class="form-label" >Email address</label>
+  <input type="email" class="form-control" id="exampleFormControlInput2" name="email" placeholder="name@example.com" required>
+</div>
+<div class="mb-3">
+    <label for="exampleFormControlInput3" class="form-label">Phone Number</label>
+    <input type="phone" class="form-control" id="exampleFormControlInput3" name="phone" placeholder="+91 9876543210" required>
+</div>
+<div class="mb-3">
+  <label for="exampleFormControlTextarea1" class="form-label" >FAQ</label>
+  <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="desc" required></textarea>
+  <button type="Submit" class="btn btn-primary my-3">Submit</button>
+
+</div>
+</form>
+   
+</div>
+{% endblock body %}
+
