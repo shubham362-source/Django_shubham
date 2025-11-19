@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}Product|{% endblock title %}
+{% block body %}
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-md-6 mb-4">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded mb-3 product-image" id="mainImage">
+            <div class="d-flex justify-content-between">
+                <!-- You can loop thumbnails dynamically if your Product model has multiple images -->
+                <img src="{{ product.image.url }}" alt="Thumbnail 1" class="thumbnail rounded active" onclick="changeImage(event, this.src)">
+                <img src="{{ product.image.url }}" alt="Thumbnail 2" class="thumbnail rounded" onclick="changeImage(event, this.src)">
+                <img src="{{ product.image.url }}" alt="Thumbnail 3" class="thumbnail rounded" onclick="changeImage(event, this.src)">
+                <img src="{{ product.image.url }}" alt="Thumbnail 4" class="thumbnail rounded" onclick="changeImage(event, this.src)">
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <div class="card custom-product-card p-4">
+                <h2 class="mb-3">{{ product.name }}</h2>
+                <p class="text-muted mb-2">SKU: {{ product.sku|default:"N/A" }}</p>
+                <div class="mb-3">
+                    <span class="h4 me-2">${{ product.price }}</span>
+                    {% if product.old_price %}
+                    <span class="text-muted"><s>${{ product.old_price }}</s></span>
+                    {% endif %}
+                </div>
+                <div class="mb-3">
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-fill text-warning"></i>
+                    <i class="bi bi-star-half text-warning"></i>
+                    <span class="ms-2">{{ product.rating|default:"4.0" }} ({{ product.reviews|default:"0" }} reviews)</span>
+                </div>
+                <p class="mb-4">{{ product.description }}</p>
+                <div class="mb-4">
+                    <h5>Color:</h5>
+                    <div class="btn-group" role="group" aria-label="Color selection">
+                        <input type="radio" class="btn-check" name="color" id="white" autocomplete="off" checked>
+                        <label class="btn btn-outline-light" for="black">white</label>
+                        <input type="radio" class="btn-check" name="color" id="silver" autocomplete="off">
+                        <label class="btn btn-outline-secondary" for="silver">Silver</label>
+                        <input type="radio" class="btn-check" name="color" id="blue" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="blue">Blue</label>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" class="form-control" id="quantity" value="1" min="1" style="width: 80px;">
+                </div>
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" name="add_to_cart" class="btn btn-primary btn-lg mb-3 me-2">
+                        <i class="bi bi-cart-plus"></i> Add to Cart
+                    </button>
+                </form>
+                <form method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" name="add_to_wishlist" class="btn btn-outline-secondary btn-lg mb-3">
+                        <i class="bi bi-heart"></i> Add to Wishlist
+                    </button>
+                </form>
+                <div class="mt-4">
+                    <h5>Key Features:</h5>
+                    <ul>
+                        <li>Industry-leading noise cancellation</li>
+                        <li>30-hour battery life</li>
+                        <li>Touch sensor controls</li>
+                        <li>Speak-to-chat technology</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function changeImage(event, src) {
+        document.getElementById('mainImage').src = src;
+        document.querySelectorAll('.thumbnail').forEach(thumb => thumb.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+</script>
+
+<!-- Styles -->
+<style>
+    .product-image {
+        max-height: 400px;
+        object-fit: cover;
+    }
+    .thumbnail {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+    .thumbnail:hover, .thumbnail.active {
+        opacity: 1;
+    }
+    .custom-product-card {
+        border: none;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .custom-product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+
+{% endblock body %}
