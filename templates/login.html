@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock title %}
+<head><!-- MDB UI KIT CSS -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.0/mdb.min.css"
+  rel="stylesheet"
+/>
+
+<!-- FontAwesome Icons (for Facebook, Google, etc.) -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+</head>
 
 {% block body %}
 <!-- Section: Design Block -->
@@ -69,7 +81,7 @@
                   <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">
                     <i class="fab fa-github"></i>
                   </button> 
-                </div>{% endcomment %}
+                </div> {% endcomment %}
               </form>
             </div>
           </div>
@@ -79,5 +91,7 @@
   </div>
   <!-- Jumbotron -->
 </section>
+<br>
+<br>
 <!-- Section: Design Block -->
 {% endblock body %}

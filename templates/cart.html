@@ -182,7 +182,9 @@ function processPayment() {
             'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
         },
         body: JSON.stringify({
-            amount: window.paymentAmount
+            amount: window.paymentAmount * 100,  // Convert to paisa
+            currency: "INR",
+            receipt: "order_rcptid_" + Date.now()
         })
     })
     .then(response => response.json())

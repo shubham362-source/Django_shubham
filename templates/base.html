@@ -1,132 +1,159 @@
 <!doctype html>
 {% load static %}
 
-<html lang="en" data-bs-theme="dark">
+<html lang="en" data-bs-theme="light">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> {% block title %}{% endblock title %} Django Shubham</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- Animate.css for fade effects -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+      .loop-container .item {
+        white-space: nowrap;
+        display: inline-block;
+      }
+    </style>
   </head>
+
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Django Shubham</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/about">About</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="/services" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Services
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/python">Python</a></li>
-            <li><a class="dropdown-item" href="/java">Java</a></li>
-            
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Django Shubham</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" href="/">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="/services" role="button" data-bs-toggle="dropdown">
+                Services
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/python">Python</a></li>
+                <li><a class="dropdown-item" href="/java">Java</a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/contact">Contact</a>
+            </li>
           </ul>
-        </li>
-       <li class="nav-item">
-          <a class="nav-link" href="/contact">Contact</a>
-        </li>
-      </ul>
-      {% if user.is_authenticated %}
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <span class="navbar-text">Welcome {{ user.first_name }}!</span>
-          </li>
-          <li class="nav-item ms-2">
-            <a class="btn btn-outline-primary" href="{% url 'cart' %}" title="Cart">
-              <i class="bi bi-cart"></i>
-            </a>
-          </li>
-          <li class="nav-item ms-1">
-            <a class="btn btn-outline-secondary" href="{% url 'wishlist' %}" title="Wishlist">
-              <i class="bi bi-heart"></i>
-            </a>
-          </li>
-          <li class="nav-item ms-2">
-            <a class="btn btn-outline-danger" href="{% url 'logout' %}" role="button">Logout</a>
-          </li>
-        </ul>
-      {% else %}
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="btn btn-outline-primary" href="{% url 'register' %}" role="button">SignUp</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ms-2">
-          <li class="nav-item">
-            <a class="btn btn-outline-success" href="{% url 'login' %}" role="button">Login</a>
-          </li>
-        </ul>
-      {% endif %}
+
+          {% if user.is_authenticated %}
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <span class="navbar-text">Welcome {{ user.first_name }}!</span>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="btn btn-outline-primary" href="{% url 'cart' %}">
+                <i class="bi bi-cart"></i>
+              </a>
+            </li>
+            <li class="nav-item ms-1">
+              <a class="btn btn-outline-secondary" href="{% url 'wishlist' %}">
+                <i class="bi bi-heart"></i>
+              </a>
+            </li>
+            <li class="nav-item ms-2">
+              <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
+            </li>
+          </ul>
+          {% else %}
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="btn btn-outline-primary" href="{% url 'register' %}">SignUp</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-2">
+            <li class="nav-item">
+              <a class="btn btn-outline-success" href="{% url 'login' %}">Login</a>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
       </div>
-    </div>
-  </div>
-</nav>
+    </nav>
 
- 
-{% if messages %}
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0" role="alert">
-<strong>{{ message }}</strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-{% endif %}
+    <!-- 🎯 Banner Placeholder (index page will use it) -->
+    {% block banner %}{% endblock banner %}
 
-{% block body %}{% endblock body %}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-   
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show my-0">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    {% block body %}{% endblock body %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Scrolling Banner JS (shared for all pages but only runs if banner exists) -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const items = document.querySelectorAll(".loop-container .item");
+        if (!items.length) return;
+
+        items.forEach(item => {
+            let speed = parseFloat(item.getAttribute("data-speed")) || 0.05;
+            let direction = parseInt(item.getAttribute("data-direction")) || -1;
+            let currentX = 0;
+
+            function animate() {
+                currentX += direction * speed;
+                item.style.transform = `translateX(${currentX}%)`;
+
+                if (direction === -1 && currentX <= -100) currentX = 100;
+                if (direction === 1 && currentX >= 100) currentX = -100;
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        });
+    });
     </script>
+
     <footer class="bg-body-tertiary text-center text-lg-start">
-  <!-- Grid container -->
-  <div class="container p-4">
-    <!--Grid row-->
-    <div class="row">
-      <!--Grid column-->
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class="text-uppercase">Footer text</h5>
+      <div class="container p-4">
+        <div class="row">
+          <div class="col-lg-6 col-md-12 mb-4">
+            <h5 class="text-uppercase">Customer Service:</h5>
+            <p>
+              Contact Us | FAQs | Shipping Info | Returns & Exchanges<br>
+              About Us | Careers | Privacy Policy | Terms & Conditions
+            </p>
+          </div>
 
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-          molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-          voluptatem veniam, est atque cumque eum delectus sint!
-        </p>
+          <div class="col-lg-6 col-md-12 mb-4">
+            <h5 class="text-uppercase">Stay Connected:</h5>
+            <p>
+              Follow us on social media for updates & exclusive offers.<br>
+              Thanks for visiting!
+            </p>
+          </div>
+        </div>
       </div>
-      <!--Grid column-->
 
-      <!--Grid column-->
-      <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-        <h5 class="text-uppercase">Footer text</h5>
-
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-          molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae aliquam
-          voluptatem veniam, est atque cumque eum delectus sint!
-        </p>
+      <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
+        © 2025 Copyright:
+        <a class="text-body" href="/"> Django Shubham </a> Shop with confidence.
       </div>
-      <!--Grid column-->
-    </div>
-    <!--Grid row-->
-  </div>
-  <!-- Grid container -->
+    </footer>
 
-  <!-- Copyright -->
-  <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-    © 2025 Copyright:
-    <a class="text-body" href="https://mdbootstrap.com/">MDBootstrap.com</a>
-  </div>
-  <!-- Copyright -->
-</footer>
   </body>
-</html>         
+</html>

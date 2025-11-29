@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}About|{% endblock title %}
 {% block body %} 
-<div class="b-example-divider"></div>
+{% comment %} <div class="b-example-divider"></div>
 <div class="container px-4 py-5">
     <h2 class="pb-2 border-bottom">About Us</h2>
     <div class="row row-cols-1 row-cols-md-2 align-items-md-center g-5 py-5">
@@ -51,5 +51,56 @@
 </div>
 </main>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" class="astro-vvvwv3sm"></script>
-</body>{% endblock body %}
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" class="astro-vvvwv3sm"></script> 
+</body>{% endcomment %}
+<link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.4/components/abouts/about-5/assets/css/about-5.css">
+
+<!-- About 5 - Bootstrap Brain Component -->
+<section class="py-3 py-md-5 py-xl-8">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-10 col-lg-8">
+        <h3 class="fs-5 mb-2 text-secondary text-uppercase">About</h3>
+        <h2 class="display-5 mb-4">Our journey began with a dream of redefining how the world perceives design.</h2>
+        <a href="/register" class="btn btn-lg btn-primary mb-3 mb-md-4 mb-xl-5">Discover More</a>
+         
+      </div>
+    </div>
+  </div>
+  <div class="container overflow-hidden">
+    <div class="row gy-4 gy-lg-0">
+      <div class="col-12 col-lg-6">
+        <article>
+          <div class="card border-0">
+            <img class="card-img-top img-fluid m-0" loading="lazy" src="/static/2.jpg" alt="Our Vision">
+            <div class="card-body border bg-white p-4">
+              <div class="entry-header mb-3">
+                <h2 class="card-title entry-title h4 mb-0">
+                  <a class="link-dark text-decoration-none" href="#!">Our Vision</a>
+                </h2>
+              </div>
+              <p class="card-text entry-summary text-secondary mb-3">From sleek modernism to timeless elegance, we infuse every creation with a touch of our artistic ingenuity. As a design agency, great design can shape perceptions, inspire action, and leave an indelible mark on the world.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div class="col-12 col-lg-6">
+        <article>
+          <div class="card border-0">
+            <img class="card-img-top img-fluid m-0" loading="lazy" src="/static/1.jpg" alt="Our Approach">
+            <div class="card-body border bg-white p-4">
+              <div class="entry-header mb-3">
+                <h2 class="card-title entry-title h4 mb-0">
+                  <a class="link-dark text-decoration-none" href="#!">Our Approach</a>
+                </h2>
+              </div>
+              <p class="card-text entry-summary text-secondary mb-3">Welcome to our design agency, where creativity knows no bounds and innovation takes center stage. We are a team of dedicated designers, strategists, and visionaries with a passion for transforming ideas into captivating visuals.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock body %}

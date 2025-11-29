@@ -10,6 +10,8 @@ import razorpay
 from django.conf import settings
 from django.http import JsonResponse
 import json
+from django.views.decorators.csrf import csrf_exempt
+import time
 
 
 # Create your views here.
@@ -80,7 +82,7 @@ def java(request):
 def product_detail(request, id):
     if request.user.is_anonymous:
         return redirect('/login')
-    product = Product.objects.get(id=id)
+    product = Product.objects.prefetch_related('images').get(id=id)
     if request.method == "POST":
         if 'add_to_cart' in request.POST:
             cart_item, created = Cart.objects.get_or_create(user=request.user, product=product)
@@ -147,30 +149,57 @@ def wishlist(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
     return render(request, 'wishlist.html', {'wishlist_items': wishlist_items})
 
+@csrf_exempt
 def create_razorpay_order(request):
     if request.method == "POST":
+        # check for presence of Razorpay API keys in settings
+        if not settings.RAZORPAY_KEY_ID or settings.RAZORPAY_KEY_ID == "your_razorpay_key_id_here":
+            return JsonResponse({"error": "Razorpay API Key ID not configured"}, status=400)
+        if not settings.RAZORPAY_KEY_SECRET or settings.RAZORPAY_KEY_SECRET == "your_razorpay_key_secret_here":
+            return JsonResponse({"error": "Razorpay API Key Secret not configured"}, status=400)
         try:
             data = json.loads(request.body)
-            amount = int(data.get("amount")) * 100  # paisa
+            amount_str = data.get("amount")
+            if not amount_str:
+                return JsonResponse({"error": "Amount is required"}, status=400)
+            try:
+                amount = int(amount_str)
+            except ValueError:
+                return JsonResponse({"error": "Amount must be a valid integer"}, status=400)
+            if amount <= 0:
+                return JsonResponse({"error": "Amount must be greater than 0"}, status=400)
+            currency = data.get("currency", "INR")
+            receipt = data.get("receipt", f"order_rcptid_{int(time.time())}")
 
-            client = razorpay.Client(auth=("YOUR_KEY_ID", "YOUR_KEY_SECRET"))
+            try:
+                client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+            except Exception as e:
+                return JsonResponse({"error": f"Failed to initialize Razorpay client: {str(e)}"}, status=400)
 
             order = client.order.create({
                 "amount": amount,
-                "currency": "INR",
+                "currency": currency,
+                "receipt": receipt,
                 "payment_capture": 1
             })
 
             return JsonResponse(order)
 
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
 
+@csrf_exempt
 def payment_success(request):
     if request.method == 'POST':
-        payment_id = request.POST.get('payment_id')
-        order_id = request.POST.get('order_id')
-        signature = request.POST.get('signature')
+        try:
+            data = json.loads(request.body)
+            payment_id = data.get('payment_id')
+            order_id = data.get('order_id')
+            signature = data.get('signature')
+        except json.JSONDecodeError:
+            return JsonResponse({'status': 'failed', 'error': 'Invalid JSON'}, status=400)
 
         # Verify payment signature
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
